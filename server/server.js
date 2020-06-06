@@ -2,9 +2,14 @@ require('dotenv').config()
 
 const restify = require('restify')
 const axios = require('axios')
+const corsMiddleware = require('restify-cors-middleware');
 const getGeocode = require('./controllers/getGeocode')
 const calculateDistance = require('./controllers/calculateDistance')
 const getReverseGeocode = require('./controllers/getReverseGeocode')
+
+const cors = corsMiddleware({
+  origins: ['*']
+});
 
 const instance = axios.create({
   baseURL: 'https://maps.googleapis.com/maps/api/geocode/'
@@ -20,6 +25,8 @@ instance.interceptors.request.use((config) => ({
 
 const server = this.server = restify.createServer()
 
+server.pre(cors.preflight);
+server.use(cors.actual);
 server.use(restify.plugins.queryParser())
 
 server.get('/', getGeocode(instance))
