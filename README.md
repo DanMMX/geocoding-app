@@ -34,7 +34,7 @@ Get the distance between two locations on the globe
 
 It's a create-react-app React application.
 
-### Installing
+### Installing
 
 ```
 cd client/
